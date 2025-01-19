@@ -4,7 +4,9 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import pages.RegisterPage;
+
 import static org.junit.Assert.*;
+
 import utils.ApiUtils;
 import utils.TestDataUtils;
 

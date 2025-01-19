@@ -7,7 +7,6 @@ import org.junit.Test;
 import pages.MainPage;
 
 
-
 public class ConstructorTests extends BaseTest {
 
     private MainPage mainPage;

@@ -12,7 +12,6 @@ import utils.ApiUtils;
 import utils.TestDataUtils;
 
 
-
 public class LoginTests extends BaseTest {
 
     private ApiUtils apiUtils;
@@ -103,10 +102,10 @@ public class LoginTests extends BaseTest {
     @After
     public void tearDownTest() {
         // Удаление пользователя через API после теста
-            if (authToken != null) {
-                apiUtils.deleteUser(authToken);
-            }
-            tearDown();
+        if (authToken != null) {
+            apiUtils.deleteUser(authToken);
+        }
+        tearDown();
     }
 
 }

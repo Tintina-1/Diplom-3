@@ -33,14 +33,14 @@ public class RegisterPage {
         driver.findElement(passwordField).sendKeys(userPassword);
     }
 
-    public void fillRegistrationForm(String userName, String userEmail, String userPassword){
+    public void fillRegistrationForm(String userName, String userEmail, String userPassword) {
         enterName(userName);
         enterEmail(userEmail);
         enterPassword(userPassword);
     }
 
     public void register(String userName, String userEmail, String userPassword) {
-        fillRegistrationForm(userName,userEmail, userPassword);
+        fillRegistrationForm(userName, userEmail, userPassword);
         clickRegisterButton();
     }
 
@@ -50,8 +50,8 @@ public class RegisterPage {
 
     public void clickRegisterButton() {
 
-       WebElement registerButtonReady =  wait.until(ExpectedConditions.elementToBeClickable(registerButton));
-       registerButtonReady.click();
+        WebElement registerButtonReady = wait.until(ExpectedConditions.elementToBeClickable(registerButton));
+        registerButtonReady.click();
     }
 
     public String getErrorText() {

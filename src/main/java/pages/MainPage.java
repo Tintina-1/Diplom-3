@@ -18,8 +18,8 @@ public class MainPage {
 
 
     private final By bunsTab = By.cssSelector("div.tab_tab__1SPyG.tab_tab_type_current__2BEPc");
-    private final By saucesTab = By.xpath("//div[contains(@class, 'tab_tab__1SPyG') and .//span[text()='Соусы']]");;
-    private final By fillingsTab = By.xpath("//div[contains(@class, 'tab_tab__1SPyG') and .//span[text()='Начинки']]");;
+    private final By saucesTab = By.xpath("//div[contains(@class, 'tab_tab__1SPyG') and .//span[text()='Соусы']]");
+    private final By fillingsTab = By.xpath("//div[contains(@class, 'tab_tab__1SPyG') and .//span[text()='Начинки']]");
     private final By bunsSection = By.cssSelector("ul.BurgerIngredients_ingredients__list__2A-mT");
     private final By saucesSection = By.cssSelector("ul.BurgerIngredients_ingredients__list__2A-mT");
     private final By fillingsSection = By.cssSelector("ul.BurgerIngredients_ingredients__list__2A-mT");

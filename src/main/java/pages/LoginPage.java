@@ -31,7 +31,7 @@ public class LoginPage {
         driver.findElement(passwordField).sendKeys(password);
     }
 
-    public void fillLoginForm(String email, String password){
+    public void fillLoginForm(String email, String password) {
         enterEmail(email);
         enterPassword(password);
     }
@@ -42,7 +42,7 @@ public class LoginPage {
     }
 
     public void clickLoginButton() {
-        WebElement loginButtonReady =  wait.until(ExpectedConditions.elementToBeClickable(loginButton));
+        WebElement loginButtonReady = wait.until(ExpectedConditions.elementToBeClickable(loginButton));
         loginButtonReady.click();
     }
 
