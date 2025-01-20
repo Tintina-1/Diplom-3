@@ -17,7 +17,9 @@ public class BaseTest {
 
                 System.setProperty("webdriver.chrome.driver", "src/main/resources/yandexdriver");
                 ChromeOptions yandexOptions = new ChromeOptions();
-
+                yandexOptions.addArguments("--headless");
+                yandexOptions.addArguments("--disable-dev-shm-usage");
+                yandexOptions.addArguments("--remote-allow-origins=*");
                 yandexOptions.setBinary("/usr/bin/yandex-browser");
                 driver = new ChromeDriver(yandexOptions);
                 break;
@@ -26,6 +28,7 @@ public class BaseTest {
             default:
                 System.setProperty("webdriver.chrome.driver", "src/drivers/chromedriver");
                 ChromeOptions options = new ChromeOptions();
+                options.addArguments("--headless");
                 options.addArguments("--disable-dev-shm-usage");
                 options.addArguments("--remote-allow-origins=*");
                 driver = new ChromeDriver(options);
