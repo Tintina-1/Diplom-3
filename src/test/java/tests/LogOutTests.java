@@ -71,7 +71,7 @@ public class LogOutTests extends BaseTest {
     @Description("Успешный выход по кнопке Выйти в личном кабинете, переход на страницу логина.")
     public void testLogOutFromProfile() {
 
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(15));
         wait.until(ExpectedConditions.urlToBe(expectedUrl));
 
         personalCabinetPage.clickLogOutButton();

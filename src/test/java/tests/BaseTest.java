@@ -5,7 +5,6 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 
-import java.io.File;
 
 public class BaseTest {
 
@@ -15,22 +14,14 @@ public class BaseTest {
     public void setUp(String browser) {
         switch (browser.toLowerCase()) {
             case "yandex":
-                // Указываем путь к YandexDriver
-                File yandexDriver = new File("/home/inna/Downloads/yandexdriver-24.12.1.704-linux/yandexdriver");
-                if (yandexDriver.exists()) {
-                    // Устанавливаем путь к драйверу
-                    System.setProperty("webdriver.chrome.driver", yandexDriver.getAbsolutePath());
-                    ChromeOptions yandexOptions = new ChromeOptions();
 
-                    // Указываем бинарный файл для Yandex браузера в Linux
-                    yandexOptions.setBinary("/usr/bin/yandex-browser");
+                System.setProperty("webdriver.chrome.driver", "src/main/resources/yandexdriver");
+                ChromeOptions yandexOptions = new ChromeOptions();
 
-                    // Инициализируем ChromeDriver с указанными опциями для Yandex
-                    driver = new ChromeDriver(yandexOptions);
-                } else {
-                    throw new IllegalStateException("YandexDriver not found!");
-                }
+                yandexOptions.setBinary("/usr/bin/yandex-browser");
+                driver = new ChromeDriver(yandexOptions);
                 break;
+
             case "chrome":
             default:
                 System.setProperty("webdriver.chrome.driver", "src/drivers/chromedriver");
