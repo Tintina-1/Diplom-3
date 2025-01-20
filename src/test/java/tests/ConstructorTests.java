@@ -5,6 +5,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import pages.MainPage;
+import io.qameta.allure.Description;
 
 
 public class ConstructorTests extends BaseTest {
@@ -19,6 +20,7 @@ public class ConstructorTests extends BaseTest {
     }
 
     @Test
+    @Description("Успешный переход на вкладку Булки и проверка отображения валидных булок")
     public void testBunsSection() {
         mainPage.waitForIngredientTabsToDisplay();
         mainPage.clickSaucesTab();
@@ -28,6 +30,7 @@ public class ConstructorTests extends BaseTest {
     }
 
     @Test
+    @Description("Успешный переход на вкладку Соусы и проверка отображения валидных соусов")
     public void testSaucesSection() {
         mainPage.waitForIngredientTabsToDisplay();
         mainPage.clickFillingsTab();
@@ -37,6 +40,7 @@ public class ConstructorTests extends BaseTest {
     }
 
     @Test
+    @Description("Успешный переход на вкладку Начинки и проверка отображения валидных начинок")
     public void testFillingsSection() {
         mainPage.waitForIngredientTabsToDisplay();
         mainPage.clickSaucesTab();

@@ -5,6 +5,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import io.qameta.allure.Step;
 
 import java.time.Duration;
 
@@ -39,6 +40,7 @@ public class RegisterPage {
         enterPassword(userPassword);
     }
 
+    @Step("Заполнение формы регистрации и нажатие кнопки регистрации")
     public void register(String userName, String userEmail, String userPassword) {
         fillRegistrationForm(userName, userEmail, userPassword);
         clickRegisterButton();

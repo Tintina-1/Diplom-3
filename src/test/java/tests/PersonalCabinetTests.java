@@ -1,5 +1,6 @@
 package tests;
 
+import io.qameta.allure.Description;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -49,6 +50,7 @@ public class PersonalCabinetTests extends BaseTest {
 
 
     @Test
+    @Description("Успешный переход в личный кабинет по клику кнопку Личный Кабинет.")
     public void loginThroughPersonalCabinetButton() {
 
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
@@ -59,6 +61,7 @@ public class PersonalCabinetTests extends BaseTest {
     }
 
     @Test
+    @Description("Успешный переход по клику на Конструктор из личного кабинета в конструктор ингредиентов на главной странице.")
     public void testConstructorRedirectFromProfile() {
 
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
@@ -72,6 +75,7 @@ public class PersonalCabinetTests extends BaseTest {
     }
 
     @Test
+    @Description("Успешный переход по клику на логотип Stellar Burgers из личного кабинета на главную страницу.")
     public void testLogoRedirectFromProfile() {
 
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));

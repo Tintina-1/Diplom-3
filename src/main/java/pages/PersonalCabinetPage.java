@@ -5,6 +5,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import io.qameta.allure.Step;
 
 import java.time.Duration;
 
@@ -24,6 +25,7 @@ public class PersonalCabinetPage {
         this.wait = new WebDriverWait(driver, Duration.ofSeconds(10));
     }
 
+    @Step("Ожидание окончания загрузки страницы и кликабельности кнопки Конструктор")
     public void clickConstructorButton() {
 
         wait.until(ExpectedConditions.invisibilityOfElementLocated(By.className("Modal_modal_overlay__x2ZCr")));
@@ -31,6 +33,7 @@ public class PersonalCabinetPage {
         clickConstructorReady.click();
     }
 
+    @Step("Ожидание окончания загрузки страницы и кликабельности кнопки логотипа")
     public void clickLogoButton() {
 
         wait.until(ExpectedConditions.invisibilityOfElementLocated(By.className("Modal_modal_overlay__x2ZCr")));
@@ -38,6 +41,7 @@ public class PersonalCabinetPage {
         clickLogoReady.click();
     }
 
+    @Step("Ожидание окончания загрузки страницы и кликабельности кнопки Выход")
     public void clickLogOutButton() {
 
         wait.until(ExpectedConditions.invisibilityOfElementLocated(By.className("Modal_modal_overlay__x2ZCr")));

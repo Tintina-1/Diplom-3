@@ -5,6 +5,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import io.qameta.allure.Step;
 
 
 import java.time.Duration;
@@ -36,6 +37,7 @@ public class LoginPage {
         enterPassword(password);
     }
 
+    @Step("Заполнение формы логина и нажатие кнопки логина")
     public void login(String email, String password) {
         fillLoginForm(email, password);
         clickLoginButton();

@@ -1,5 +1,6 @@
 package tests;
 
+import io.qameta.allure.Description;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -50,6 +51,7 @@ public class LogOutTests extends BaseTest {
 
 
     @Test
+    @Description("Успешный выход по кнопке Выйти в личном кабинете, переход на страницу логина.")
     public void testLogOutFromProfile() {
 
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));

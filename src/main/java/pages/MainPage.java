@@ -5,6 +5,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import io.qameta.allure.Step;
 
 import java.time.Duration;
 import java.util.List;
@@ -34,6 +35,7 @@ public class MainPage {
         driver.findElement(loginButton).click();
     }
 
+    @Step("Ожидание кликабельности кнопки Личный кабинет")
     public void clickPersonalCabinetButton() {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
         WebElement clickPersonalCabinetReady = wait.until(ExpectedConditions.elementToBeClickable(personalCabinetButton));
@@ -44,6 +46,7 @@ public class MainPage {
         wait.until(ExpectedConditions.urlToBe("https://stellarburgers.nomoreparties.site/"));
     }
 
+    @Step("Ожидание отображения вкладок ингредиентов")
     public void waitForIngredientTabsToDisplay() {
         new WebDriverWait(driver, Duration.ofSeconds(20))
                 .until(ExpectedConditions.visibilityOfElementLocated(bunsTab));
@@ -61,16 +64,19 @@ public class MainPage {
         driver.findElement(fillingsTab).click();
     }
 
+    @Step("Проверка наполнения данными вкладки Булки")
     public boolean areBunsDisplayed() {
         List<WebElement> buns = driver.findElements(bunsSection);
         return !buns.isEmpty();
     }
 
+    @Step("Проверка наполнения данными вкладки Соусы")
     public boolean areSaucesDisplayed() {
         List<WebElement> sauces = driver.findElements(saucesSection);
         return !sauces.isEmpty();
     }
 
+    @Step("Проверка наполнения данными вкладки Соусы")
     public boolean areFillingsDisplayed() {
         List<WebElement> fillings = driver.findElements(fillingsSection);
         return !fillings.isEmpty();

@@ -1,5 +1,6 @@
 package tests;
 
+import io.qameta.allure.Description;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -40,6 +41,7 @@ public class LoginTests extends BaseTest {
     }
 
     @Test
+    @Description("Успешный вход по кнопке «Войти в аккаунт» на главной странице")
     public void loginThroughMainPageButton() {
 
         authToken = apiUtils.registerUser(userName, userEmail, userPassword);
@@ -55,6 +57,7 @@ public class LoginTests extends BaseTest {
     }
 
     @Test
+    @Description("Успешный вход по кнопке \"Личный кабинет\" с валидными именем пользователя и паролем")
     public void loginThroughPersonalCabinetButton() {
         authToken = apiUtils.registerUser(userName, userEmail, userPassword);
 
@@ -67,6 +70,7 @@ public class LoginTests extends BaseTest {
     }
 
     @Test
+    @Description(value = "Успешный вход через форму регистрации: регистрация пользователя с валидными данными, переход на страницу логина, логин с регистрационными данными из первого шага")
     public void loginThroughRegisterPageButton() {
 
         driver.get(baseUrl + "register");
@@ -83,6 +87,7 @@ public class LoginTests extends BaseTest {
     }
 
     @Test
+    @Description("Успешный вход через страницу восстановления пароля")
     public void loginThroughPasswordRecoveryButton() {
         authToken = apiUtils.registerUser(userName, userEmail, userPassword);
         driver.get(baseUrl + "login");

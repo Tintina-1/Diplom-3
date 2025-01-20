@@ -1,5 +1,6 @@
 package tests;
 
+import io.qameta.allure.Description;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -33,6 +34,7 @@ public class RegisterTests extends BaseTest {
     }
 
     @Test
+    @Description("Успешная регистрация с валидным именем, почтой и паролем более чем из 6 символов.")
     public void testSuccessfulRegistration() {
         registerPage.register(userName, userEmail, userPassword);
         registerPage.waitForRedirectionToLoginPage();
@@ -45,6 +47,7 @@ public class RegisterTests extends BaseTest {
     }
 
     @Test
+    @Description("Получение ошибки Некорректный Пароль для некорректного пароля. Минимальный пароль — шесть символов.")
     public void testRegistrationWithShortPassword() {
         String shortPassword = "123";
         authToken = apiUtils.registerUser(userName, userEmail, shortPassword);
