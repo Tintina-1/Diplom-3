@@ -4,17 +4,35 @@ import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
 import pages.MainPage;
 import io.qameta.allure.Description;
 
+import java.util.Arrays;
+import java.util.Collection;
 
+@RunWith(Parameterized.class)
 public class ConstructorTests extends BaseTest {
 
     private MainPage mainPage;
+    private String browser;
+
+    public ConstructorTests(String browser) {
+        this.browser = browser;
+    }
+
+    @Parameterized.Parameters
+    public static Collection<Object[]> browsers() {
+        return Arrays.asList(new Object[][] {
+                { "chrome" },
+                { "yandex" }
+        });
+    }
 
     @Before
     public void setUpTest() {
-        setUp("chrome");
+        setUp(browser);
         driver.get(baseUrl);
         mainPage = new MainPage(driver);
     }

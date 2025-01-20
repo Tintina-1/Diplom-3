@@ -4,6 +4,8 @@ import io.qameta.allure.Description;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
 import pages.RegisterPage;
 
 import static org.junit.Assert.*;
@@ -11,6 +13,10 @@ import static org.junit.Assert.*;
 import utils.ApiUtils;
 import utils.TestDataUtils;
 
+import java.util.Arrays;
+import java.util.Collection;
+
+@RunWith(Parameterized.class)
 public class RegisterTests extends BaseTest {
 
     private RegisterPage registerPage;
@@ -19,10 +25,23 @@ public class RegisterTests extends BaseTest {
     private String userPassword;
     private String userName;
     private String authToken;
+    private String browser;
+
+    public RegisterTests(String browser) {
+        this.browser = browser;
+    }
+
+    @Parameterized.Parameters
+    public static Collection<Object[]> browsers() {
+        return Arrays.asList(new Object[][] {
+                { "chrome" },
+                { "yandex" }
+        });
+    }
 
     @Before
     public void setUpTest() {
-        setUp(System.getProperty("browser", "chrome"));
+        setUp(browser);
         driver.get(baseUrl + "register");
         registerPage = new RegisterPage(driver);
         apiUtils = new ApiUtils(baseUrl);

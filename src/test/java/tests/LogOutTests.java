@@ -5,6 +5,8 @@ import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import pages.LoginPage;
@@ -14,7 +16,10 @@ import utils.ApiUtils;
 import utils.TestDataUtils;
 
 import java.time.Duration;
+import java.util.Arrays;
+import java.util.Collection;
 
+@RunWith(Parameterized.class)
 public class LogOutTests extends BaseTest {
 
     private ApiUtils apiUtils;
@@ -24,10 +29,22 @@ public class LogOutTests extends BaseTest {
     private String authToken;
     private String expectedUrl;
     private PersonalCabinetPage personalCabinetPage;
+    private String browser;
+
+    public LogOutTests(String browser) {
+        this.browser = browser;
+    }
+    @Parameterized.Parameters
+    public static Collection<Object[]> browsers() {
+        return Arrays.asList(new Object[][] {
+                { "chrome" },
+                { "yandex" }
+        });
+    }
 
     @Before
     public void setUpTest() {
-        setUp("chrome");
+        setUp(browser);
         driver.get(baseUrl);
 
         apiUtils = new ApiUtils(baseUrl);

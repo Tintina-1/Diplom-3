@@ -22,7 +22,7 @@ public class PersonalCabinetPage {
 
     public PersonalCabinetPage(WebDriver driver) {
         this.driver = driver;
-        this.wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        this.wait = new WebDriverWait(driver, Duration.ofSeconds(15));
     }
 
     @Step("Ожидание окончания загрузки страницы и кликабельности кнопки Конструктор")

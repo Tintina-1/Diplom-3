@@ -5,6 +5,8 @@ import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
 import pages.ForgotPasswordPage;
 import pages.LoginPage;
 import pages.MainPage;
@@ -12,7 +14,10 @@ import pages.RegisterPage;
 import utils.ApiUtils;
 import utils.TestDataUtils;
 
+import java.util.Arrays;
+import java.util.Collection;
 
+@RunWith(Parameterized.class)
 public class LoginTests extends BaseTest {
 
     private ApiUtils apiUtils;
@@ -23,10 +28,23 @@ public class LoginTests extends BaseTest {
     private RegisterPage registerPage;
     private MainPage mainPage;
     private LoginPage loginPage;
+    private String browser;
+
+    public LoginTests(String browser) {
+        this.browser = browser;
+    }
+
+    @Parameterized.Parameters
+    public static Collection<Object[]> browsers() {
+        return Arrays.asList(new Object[][] {
+                { "chrome" },
+                { "yandex" }
+        });
+    }
 
     @Before
     public void setUpTest() {
-        setUp("chrome");
+        setUp(browser);
         driver.get(baseUrl);
 
         apiUtils = new ApiUtils(baseUrl);
