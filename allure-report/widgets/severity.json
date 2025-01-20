@@ -1,0 +1,1 @@
+[{"uid":"8351011d8093eb1e","name":"Вход по кнопке «Войти в аккаунт» на главной","time":{"start":1737233077514,"stop":1737233077515,"duration":1},"status":"skipped","severity":"normal"},{"uid":"b7d1ec24d92497b0","name":"setup","time":{"start":1737233077449,"stop":1737233077453,"duration":4},"status":"broken","severity":"normal"}]
