@@ -24,9 +24,9 @@ public class ConstructorTests extends BaseTest {
 
     @Parameterized.Parameters
     public static Collection<Object[]> browsers() {
-        return Arrays.asList(new Object[][] {
-                { "chrome" },
-                { "yandex" }
+        return Arrays.asList(new Object[][]{
+                {"chrome"},
+                {"yandex"}
         });
     }
 
@@ -35,6 +35,9 @@ public class ConstructorTests extends BaseTest {
         setUp(browser);
         driver.get(baseUrl);
         mainPage = new MainPage(driver);
+        mainPage.waitForMainPageToLoad();
+        mainPage.waitForIngredientTabsToDisplay();
+        mainPage.initializeSections();
     }
 
     @Test
@@ -44,7 +47,9 @@ public class ConstructorTests extends BaseTest {
         mainPage.clickSaucesTab();
         mainPage.clickBunsTab();
 
-        Assert.assertTrue("Ингредиенты в разделе 'Булки' не отображаются", mainPage.areBunsDisplayed());
+        Assert.assertTrue("Элементы в разделе 'Булки' не отображаются", mainPage.areBunsDisplayed());
+        Assert.assertTrue("Булка 'Флюоресцентная булка R2-D3' отсутствует", mainPage.isBunPresent("Флюоресцентная булка R2-D3"));
+        Assert.assertTrue("Булка 'Краторная булка N-200i' отсутствует", mainPage.isBunPresent("Краторная булка N-200i"));
     }
 
     @Test
@@ -55,6 +60,8 @@ public class ConstructorTests extends BaseTest {
         mainPage.clickSaucesTab();
 
         Assert.assertTrue("Элементы в разделе 'Соусы' не отображаются", mainPage.areSaucesDisplayed());
+        Assert.assertTrue("Соус 'Spicy-X' отсутствует", mainPage.isSaucePresent("Соус Spicy-X"));
+        Assert.assertTrue("Соус 'фирменный Space Sauce' отсутствует", mainPage.isSaucePresent("Соус фирменный Space Sauce"));
     }
 
     @Test
@@ -65,6 +72,8 @@ public class ConstructorTests extends BaseTest {
         mainPage.clickFillingsTab();
 
         Assert.assertTrue("Элементы в разделе 'Начинки' не отображаются", mainPage.areFillingsDisplayed());
+        Assert.assertTrue("Начинка 'Мясо бессмертных моллюсков Protostomia' отсутствует", mainPage.isFillingPresent("Мясо бессмертных моллюсков Protostomia"));
+        Assert.assertTrue("Начинка 'Говяжий метеорит (отбивная)' отсутствует", mainPage.isFillingPresent("Говяжий метеорит (отбивная)"));
     }
 
     @After
