@@ -19,6 +19,7 @@ public class MainPage {
 
     private final By bunsTab = By.xpath("//div[contains(@class, 'tab_tab__1SPyG') and .//span[text()='Булки']]");
     private final By saucesTab = By.xpath("//div[contains(@class, 'tab_tab__1SPyG') and .//span[text()='Соусы']]");
+    private final By activeTab = By.xpath("//div[contains(@class, 'tab_tab__1SPyG tab_tab_type_current')]");
     private final By fillingsTab = By.xpath("//div[contains(@class, 'tab_tab__1SPyG') and .//span[text()='Начинки']]");
 
     private WebElement bunsSection;
@@ -61,15 +62,29 @@ public class MainPage {
     }
 
     public void clickBunsTab() {
-        driver.findElement(bunsTab).click();
+        wait.until(ExpectedConditions.invisibilityOfElementLocated(By.className("Modal_modal_overlay__x2ZCr")));
+        WebElement clickBunsTabReady = wait.until(ExpectedConditions.elementToBeClickable(bunsTab));
+        clickBunsTabReady.click();
+        wait.until(ExpectedConditions.textToBePresentInElementLocated(activeTab, "Булки"));
+    }
+
+    @Step("Проверка названия активной вкладки")
+    public boolean isTabActive(String tabName) {
+        wait.until(ExpectedConditions.visibilityOfElementLocated(activeTab));
+        WebElement activeTabElement = driver.findElement(activeTab);
+        return activeTabElement.getText().equals(tabName);
     }
 
     public void clickSaucesTab() {
-        driver.findElement(saucesTab).click();
+        WebElement clickSaucesTabReady = wait.until(ExpectedConditions.elementToBeClickable(saucesTab));
+        clickSaucesTabReady.click();
+        wait.until(ExpectedConditions.textToBePresentInElementLocated(activeTab, "Соусы"));
     }
 
     public void clickFillingsTab() {
-        driver.findElement(fillingsTab).click();
+        WebElement clickFillingsTabReady = wait.until(ExpectedConditions.elementToBeClickable(fillingsTab));
+        clickFillingsTabReady.click();
+        wait.until(ExpectedConditions.textToBePresentInElementLocated(activeTab, "Начинки"));
     }
 
     @Step("Проверка наполнения данными вкладки Булки")

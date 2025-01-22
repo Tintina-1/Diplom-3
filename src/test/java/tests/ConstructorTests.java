@@ -44,7 +44,7 @@ public class ConstructorTests extends BaseTest {
     @Description("Успешный переход на вкладку Булки и проверка отображения валидных булок")
     public void testBunsSection() {
         mainPage.waitForIngredientTabsToDisplay();
-        mainPage.clickSaucesTab();
+        mainPage.clickFillingsTab();
         mainPage.clickBunsTab();
 
         Assert.assertTrue("Элементы в разделе 'Булки' не отображаются", mainPage.areBunsDisplayed());
@@ -56,24 +56,22 @@ public class ConstructorTests extends BaseTest {
     @Description("Успешный переход на вкладку Соусы и проверка отображения валидных соусов")
     public void testSaucesSection() {
         mainPage.waitForIngredientTabsToDisplay();
-        mainPage.clickFillingsTab();
         mainPage.clickSaucesTab();
 
         Assert.assertTrue("Элементы в разделе 'Соусы' не отображаются", mainPage.areSaucesDisplayed());
-        Assert.assertTrue("Соус 'Spicy-X' отсутствует", mainPage.isSaucePresent("Соус Spicy-X"));
-        Assert.assertTrue("Соус 'фирменный Space Sauce' отсутствует", mainPage.isSaucePresent("Соус фирменный Space Sauce"));
+        Assert.assertTrue("Соус традиционный галактический отсутствует", mainPage.isSaucePresent("Соус традиционный галактический"));
+        Assert.assertTrue("Соус 'Соус с шипами Антарианского плоскоходца' отсутствует", mainPage.isSaucePresent("Соус с шипами Антарианского плоскоходца"));
     }
 
     @Test
     @Description("Успешный переход на вкладку Начинки и проверка отображения валидных начинок")
     public void testFillingsSection() {
         mainPage.waitForIngredientTabsToDisplay();
-        mainPage.clickSaucesTab();
         mainPage.clickFillingsTab();
 
         Assert.assertTrue("Элементы в разделе 'Начинки' не отображаются", mainPage.areFillingsDisplayed());
-        Assert.assertTrue("Начинка 'Мясо бессмертных моллюсков Protostomia' отсутствует", mainPage.isFillingPresent("Мясо бессмертных моллюсков Protostomia"));
-        Assert.assertTrue("Начинка 'Говяжий метеорит (отбивная)' отсутствует", mainPage.isFillingPresent("Говяжий метеорит (отбивная)"));
+        Assert.assertTrue("Начинка 'Биокотлета из марсианской Магнолии' отсутствует", mainPage.isFillingPresent("Биокотлета из марсианской Магнолии"));
+        Assert.assertTrue("Начинка 'Филе Люминесцентного тетраодонтимформа' отсутствует", mainPage.isFillingPresent("Филе Люминесцентного тетраодонтимформа"));
     }
 
     @After
