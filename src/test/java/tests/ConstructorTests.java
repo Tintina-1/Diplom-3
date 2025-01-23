@@ -11,6 +11,8 @@ import io.qameta.allure.Description;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
+
 
 @RunWith(Parameterized.class)
 public class ConstructorTests extends BaseTest {
@@ -36,42 +38,67 @@ public class ConstructorTests extends BaseTest {
         driver.get(baseUrl);
         mainPage = new MainPage(driver);
         mainPage.waitForMainPageToLoad();
-        mainPage.waitForIngredientTabsToDisplay();
         mainPage.initializeSections();
     }
 
-    @Test
-    @Description("Успешный переход на вкладку Булки и проверка отображения валидных булок")
-    public void testBunsSection() {
-        mainPage.waitForIngredientTabsToDisplay();
-        mainPage.clickFillingsTab();
-        mainPage.clickBunsTab();
 
-        Assert.assertTrue("Элементы в разделе 'Булки' не отображаются", mainPage.areBunsDisplayed());
-        Assert.assertTrue("Булка 'Флюоресцентная булка R2-D3' отсутствует", mainPage.isBunPresent("Флюоресцентная булка R2-D3"));
-        Assert.assertTrue("Булка 'Краторная булка N-200i' отсутствует", mainPage.isBunPresent("Краторная булка N-200i"));
+    @Test
+    @Description("Успешная проверка отображения валидных булок при переходе со вкладки Начинки на вкладку Булки")
+    public void testBunsSectionSwitch()  {
+        mainPage.switchToTabsSequentially("Начинки", "Булки");
+
+        List<String> expectedBuns = Arrays.asList(
+                "Флюоресцентная булка R2-D3",
+                "Краторная булка N-200i"
+        );
+        List<String> actualBuns = mainPage.getIngredientsInActiveTab();
+        Assert.assertTrue("Не все ожидаемые булки отображены в активной вкладке",
+                actualBuns.containsAll(expectedBuns));
+
     }
+
 
     @Test
     @Description("Успешный переход на вкладку Соусы и проверка отображения валидных соусов")
     public void testSaucesSection() {
-        mainPage.waitForIngredientTabsToDisplay();
-        mainPage.clickSaucesTab();
+        mainPage.switchToTab("Соусы");
+        Assert.assertTrue("Вкладка 'Соусы' не активна", mainPage.isTabActive("Соусы"));
+        List<String> expectedSauces = Arrays.asList(
+                "Соус Spicy-X",
+                "Соус фирменный Space Sauce",
+                "Соус традиционный галактический",
+                "Соус с шипами Антарианского плоскоходца"
+        );
 
-        Assert.assertTrue("Элементы в разделе 'Соусы' не отображаются", mainPage.areSaucesDisplayed());
-        Assert.assertTrue("Соус традиционный галактический отсутствует", mainPage.isSaucePresent("Соус традиционный галактический"));
-        Assert.assertTrue("Соус 'Соус с шипами Антарианского плоскоходца' отсутствует", mainPage.isSaucePresent("Соус с шипами Антарианского плоскоходца"));
+        List<String> actualSauces = mainPage.getIngredientsInActiveTab();
+        Assert.assertTrue("Не все ожидаемые соусы отображены в активной вкладке",
+                actualSauces.containsAll(expectedSauces));
+
+
     }
+
 
     @Test
     @Description("Успешный переход на вкладку Начинки и проверка отображения валидных начинок")
     public void testFillingsSection() {
-        mainPage.waitForIngredientTabsToDisplay();
-        mainPage.clickFillingsTab();
+        mainPage.switchToTab("Начинки");
+        Assert.assertTrue("Вкладка 'Начинки' не активна", mainPage.isTabActive("Начинки"));
+        List<String> expectedFillings = Arrays.asList(
+                "Мясо бессмертных моллюсков Protostomia",
+                "Говяжий метеорит (отбивная)",
+                "Биокотлета из марсианской Магнолии",
+                "Филе Люминесцентного тетраодонтимформа",
+                "Хрустящие минеральные кольца",
+                "Плоды Фалленианского дерева",
+                "Кристаллы марсианских альфа-сахаридов",
+                "Мини-салат Экзо-Плантаго",
+                "Сыр с астероидной плесенью"
+        );
 
-        Assert.assertTrue("Элементы в разделе 'Начинки' не отображаются", mainPage.areFillingsDisplayed());
-        Assert.assertTrue("Начинка 'Биокотлета из марсианской Магнолии' отсутствует", mainPage.isFillingPresent("Биокотлета из марсианской Магнолии"));
-        Assert.assertTrue("Начинка 'Филе Люминесцентного тетраодонтимформа' отсутствует", mainPage.isFillingPresent("Филе Люминесцентного тетраодонтимформа"));
+        List<String> actualFillings = mainPage.getIngredientsInActiveTab();
+
+        Assert.assertTrue("Не все ожидаемые начинки отображены в активной вкладке",
+                actualFillings.containsAll(expectedFillings));
     }
 
     @After

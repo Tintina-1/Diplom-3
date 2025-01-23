@@ -9,6 +9,7 @@ import io.qameta.allure.Step;
 
 import java.time.Duration;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class MainPage {
     private WebDriver driver;
@@ -16,11 +17,8 @@ public class MainPage {
 
     private final By loginButton = By.xpath("//button[text()='Войти в аккаунт']");
     private final By personalCabinetButton = By.xpath("//p[contains(text(),'Личный Кабинет')]");
-
-    private final By bunsTab = By.xpath("//div[contains(@class, 'tab_tab__1SPyG') and .//span[text()='Булки']]");
-    private final By saucesTab = By.xpath("//div[contains(@class, 'tab_tab__1SPyG') and .//span[text()='Соусы']]");
     private final By activeTab = By.xpath("//div[contains(@class, 'tab_tab__1SPyG tab_tab_type_current')]");
-    private final By fillingsTab = By.xpath("//div[contains(@class, 'tab_tab__1SPyG') and .//span[text()='Начинки']]");
+
 
     private WebElement bunsSection;
     private WebElement saucesSection;
@@ -28,7 +26,7 @@ public class MainPage {
 
     public MainPage(WebDriver driver) {
         this.driver = driver;
-        this.wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+        this.wait = new WebDriverWait(driver, Duration.ofSeconds(10));
     }
 
     public void initializeSections() {
@@ -56,16 +54,38 @@ public class MainPage {
         wait.until(ExpectedConditions.urlToBe("https://stellarburgers.nomoreparties.site/"));
     }
 
-    @Step("Ожидание отображения вкладок ингредиентов")
-    public void waitForIngredientTabsToDisplay() {
-        wait.until(ExpectedConditions.visibilityOfElementLocated(bunsTab));
+
+    public void switchToTab(String tabName) {
+        By tabLocator = By.xpath(String.format("//div[contains(@class, 'tab_tab__1SPyG') and .//span[text()='%s']]", tabName));
+        WebElement tabElement = wait.until(ExpectedConditions.visibilityOfElementLocated(tabLocator));
+        wait.until(ExpectedConditions.elementToBeClickable(tabElement));
+
+        ((org.openqa.selenium.JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", tabElement);
+        ((org.openqa.selenium.JavascriptExecutor) driver).executeScript("arguments[0].click();", tabElement);
+
+        wait.until(driver -> {
+            String activeTabText = driver.findElement(activeTab).getText();
+            return activeTabText.equals(tabName);
+        });
     }
 
-    public void clickBunsTab() {
-        wait.until(ExpectedConditions.invisibilityOfElementLocated(By.className("Modal_modal_overlay__x2ZCr")));
-        WebElement clickBunsTabReady = wait.until(ExpectedConditions.elementToBeClickable(bunsTab));
-        clickBunsTabReady.click();
-        wait.until(ExpectedConditions.textToBePresentInElementLocated(activeTab, "Булки"));
+    public void switchToTabsSequentially(String... tabNames) {
+        for (String tabName : tabNames) {
+            switchToTab(tabName);
+            wait.until(ExpectedConditions.visibilityOfElementLocated(activeTab));
+            waitForSomeTime(2);
+        }
+    }
+
+    public void waitForSomeTime(int seconds) {
+        wait.until(driver -> {
+            try {
+                Thread.sleep(seconds * 2000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            return true;
+        });
     }
 
     @Step("Проверка названия активной вкладки")
@@ -75,66 +95,29 @@ public class MainPage {
         return activeTabElement.getText().equals(tabName);
     }
 
-    public void clickSaucesTab() {
-        WebElement clickSaucesTabReady = wait.until(ExpectedConditions.elementToBeClickable(saucesTab));
-        clickSaucesTabReady.click();
-        wait.until(ExpectedConditions.textToBePresentInElementLocated(activeTab, "Соусы"));
-    }
 
-    public void clickFillingsTab() {
-        WebElement clickFillingsTabReady = wait.until(ExpectedConditions.elementToBeClickable(fillingsTab));
-        clickFillingsTabReady.click();
-        wait.until(ExpectedConditions.textToBePresentInElementLocated(activeTab, "Начинки"));
-    }
+    @Step("Получение текущей активной секции")
+    private WebElement getActiveSection() {
+        String activeTabName = driver.findElement(activeTab).getText();
 
-    @Step("Проверка наполнения данными вкладки Булки")
-    public boolean areBunsDisplayed() {
-        return bunsSection.isDisplayed();
-    }
-
-    @Step("Проверка наполнения данными вкладки Соусы")
-    public boolean areSaucesDisplayed() {
-        return saucesSection.isDisplayed();
-    }
-
-    @Step("Проверка наполнения данными вкладки Начинки")
-    public boolean areFillingsDisplayed() {
-        return fillingsSection.isDisplayed();
-    }
-
-    @Step("Проверка наличия конкретной булки")
-    public boolean isBunPresent(String bunName) {
-        List<WebElement> buns = bunsSection.findElements(By.cssSelector(".BurgerIngredient_ingredient__1TVf6"));
-        for (WebElement bun : buns) {
-            String currentBunName = bun.findElement(By.cssSelector(".BurgerIngredient_ingredient__text__yp3dH")).getText();
-            if (currentBunName.equals(bunName)) {
-                return true;
-            }
+        switch (activeTabName) {
+            case "Булки":
+                return bunsSection;
+            case "Соусы":
+                return saucesSection;
+            case "Начинки":
+                return fillingsSection;
+            default:
+                throw new IllegalStateException("Неизвестная активная вкладка: " + activeTabName);
         }
-        return false;
     }
 
-    @Step("Проверка наличия конкретного соуса")
-    public boolean isSaucePresent(String sauceName) {
-        List<WebElement> sauces = saucesSection.findElements(By.cssSelector(".BurgerIngredient_ingredient__1TVf6"));
-        for (WebElement sauce : sauces) {
-            String currentSauceName = sauce.findElement(By.cssSelector(".BurgerIngredient_ingredient__text__yp3dH")).getText();
-            if (currentSauceName.equals(sauceName)) {
-                return true;
-            }
-        }
-        return false;
+    public List<String> getIngredientsInActiveTab() {
+        WebElement activeSection = getActiveSection();
+        List<WebElement> ingredientElements = activeSection.findElements(By.cssSelector(".BurgerIngredient_ingredient__text__yp3dH"));
+        return ingredientElements.stream()
+                .map(WebElement::getText)
+                .collect(Collectors.toList());
     }
 
-    @Step("Проверка наличия конкретной начинки")
-    public boolean isFillingPresent(String fillingName) {
-        List<WebElement> fillings = fillingsSection.findElements(By.cssSelector(".BurgerIngredient_ingredient__1TVf6"));
-        for (WebElement filling : fillings) {
-            String currentFillingName = filling.findElement(By.cssSelector(".BurgerIngredient_ingredient__text__yp3dH")).getText();
-            if (currentFillingName.equals(fillingName)) {
-                return true;
-            }
-        }
-        return false;
-    }
 }
