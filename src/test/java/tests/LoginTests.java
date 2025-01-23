@@ -1,0 +1,135 @@
+package tests;
+
+import io.qameta.allure.Description;
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
+import pages.ForgotPasswordPage;
+import pages.LoginPage;
+import pages.MainPage;
+import pages.RegisterPage;
+import utils.ApiUtils;
+import utils.TestDataUtils;
+
+import java.util.Arrays;
+import java.util.Collection;
+
+@RunWith(Parameterized.class)
+public class LoginTests extends BaseTest {
+
+    private ApiUtils apiUtils;
+    private String userEmail;
+    private String userPassword;
+    private String userName;
+    private String authToken;
+    private RegisterPage registerPage;
+    private MainPage mainPage;
+    private LoginPage loginPage;
+    private String browser;
+
+    public LoginTests(String browser) {
+        this.browser = browser;
+    }
+
+    @Parameterized.Parameters
+    public static Collection<Object[]> browsers() {
+        return Arrays.asList(new Object[][] {
+                { "chrome" },
+                { "yandex" }
+        });
+    }
+
+    @Before
+    public void setUpTest() {
+        setUp(browser);
+        driver.get(baseUrl);
+
+        apiUtils = new ApiUtils(baseUrl);
+
+        mainPage = new MainPage(driver);
+        loginPage = new LoginPage(driver);
+        registerPage = new RegisterPage(driver);
+
+        userName = TestDataUtils.generateUniqueName();
+        userEmail = TestDataUtils.generateUniqueEmail();
+        userPassword = TestDataUtils.generateUniquePassword();
+    }
+
+    @Test
+    @Description("Успешный вход по кнопке «Войти в аккаунт» на главной странице")
+    public void loginThroughMainPageButton() {
+
+        authToken = apiUtils.registerUser(userName, userEmail, userPassword);
+
+        mainPage.clickLoginButton();
+
+        LoginPage loginPage = new LoginPage(driver);
+        loginPage.login(userEmail, userPassword);
+
+        mainPage.waitForMainPageToLoad();
+
+        Assert.assertEquals("Редирект не на главную страницу", baseUrl, driver.getCurrentUrl());
+    }
+
+    @Test
+    @Description("Успешный вход по кнопке \"Личный кабинет\" с валидными именем пользователя и паролем")
+    public void loginThroughPersonalCabinetButton() {
+        authToken = apiUtils.registerUser(userName, userEmail, userPassword);
+
+        mainPage.clickPersonalCabinetButton();
+        loginPage.login(userEmail, userPassword);
+
+        mainPage.waitForMainPageToLoad();
+
+        Assert.assertEquals("Редирект не на главную страницу", baseUrl, driver.getCurrentUrl());
+    }
+
+    @Test
+    @Description(value = "Успешный вход через форму регистрации: регистрация пользователя с валидными данными, переход на страницу логина, логин с регистрационными данными из первого шага")
+    public void loginThroughRegisterPageButton() {
+
+        driver.get(baseUrl + "register");
+
+        registerPage.register(userName, userEmail, userPassword);
+        registerPage.waitForRedirectionToLoginPage();
+
+        loginPage.login(userEmail, userPassword);
+
+        mainPage.waitForMainPageToLoad();
+
+        // Проверяем успешный вход
+        Assert.assertEquals("Редирект не на главную страницу", baseUrl, driver.getCurrentUrl());
+    }
+
+    @Test
+    @Description("Успешный вход через страницу восстановления пароля")
+    public void loginThroughPasswordRecoveryButton() {
+        authToken = apiUtils.registerUser(userName, userEmail, userPassword);
+        driver.get(baseUrl + "login");
+
+        loginPage.clickForgotPassword();
+
+        ForgotPasswordPage passwordPage = new ForgotPasswordPage(driver);
+        passwordPage.clickLoginButton();
+        loginPage.login(userEmail, userPassword);
+
+        mainPage.waitForMainPageToLoad();
+
+        // Проверяем успешный вход
+        Assert.assertEquals("Редирект не на главную страницу", baseUrl, driver.getCurrentUrl());
+    }
+
+    @After
+    public void tearDownTest() {
+        // Удаление пользователя через API после теста
+        if (authToken != null) {
+            apiUtils.deleteUser(authToken);
+        }
+        tearDown();
+    }
+
+}
+

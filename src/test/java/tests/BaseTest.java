@@ -1,0 +1,45 @@
+package tests;
+
+
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
+
+
+public class BaseTest {
+
+    protected WebDriver driver;
+    protected String baseUrl = "https://stellarburgers.nomoreparties.site/";
+
+    public void setUp(String browser) {
+        switch (browser.toLowerCase()) {
+            case "yandex":
+
+                System.setProperty("webdriver.chrome.driver", "src/main/resources/yandexdriver");
+                ChromeOptions yandexOptions = new ChromeOptions();
+                yandexOptions.addArguments("--headless");
+                yandexOptions.addArguments("--disable-dev-shm-usage");
+                yandexOptions.addArguments("--remote-allow-origins=*");
+                yandexOptions.setBinary("/usr/bin/yandex-browser");
+                driver = new ChromeDriver(yandexOptions);
+                break;
+
+            case "chrome":
+            default:
+                System.setProperty("webdriver.chrome.driver", "src/drivers/chromedriver");
+                ChromeOptions options = new ChromeOptions();
+                options.addArguments("--headless");
+                options.addArguments("--disable-dev-shm-usage");
+                options.addArguments("--remote-allow-origins=*");
+                driver = new ChromeDriver(options);
+                break;
+        }
+        driver.manage().window().maximize();
+    }
+
+    public void tearDown() {
+        if (driver != null) {
+            driver.quit();
+        }
+    }
+}
